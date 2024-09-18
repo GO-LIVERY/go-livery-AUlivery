@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AU-Livery Food Delivery</title>
+<style>
+body {
+font-family: Arial, sans-serif;
+margin: 0;
+padding: 0;
+background-color: #FFA500;
+}
+.container {
+max-width: 600px;
+margin: 0 auto;
+padding: 20px;
+}
+header {
+text-align: center;
+margin-bottom: 20px;
+}
+header img {
+width: 100px;
+height: 100px;
+border-radius: 50%;
+margin-bottom: 10px;
+}
+h1 {
+color: #00008B;
+margin-bottom: 5px;
+}
+.tabs {
+display: flex;
+margin-bottom: 20px;
+}
+.tab {
+flex: 1;
+text-align: center;
+padding: 10px;
+background-color: #00008B;
+color: white;
+cursor: pointer;
+}
+.tab.active {
+background-color: #0000CD;
+}
+.thrilled {
+background-color: white;
+padding: 20px;
+border-radius: 5px;
+}
+.menu-item {
+margin-bottom: 20px;
+border: 1px solid #ddd;
+padding: 10px;
+border-radius: 5px;
+}
+.menu-item h3 {
+margin-top: 0;
+}
+select {
+width: 100%;
+padding: 10px;
+margin-bottom: 20px;
+}
+button {
+background-color: #4CAF50;
+border: none;
+color: white;
+padding: 15px 32px;
+text-align: center;
+text-decoration: none;
+display: inline-block;
+font-size: 16px;
+margin: 4px 2px;
+cursor: pointer;
+}
+</style>
+</head>
+<body>
+<div class="container">
+<header>
+<img src="file:///Users/macbook/Desktop/AU.png" alt="AU-Livery Logo">
+<h1>AU-Livery</h1>
+<p>Food Delivery for Averett University</p>
+</header>
+
+<div class="tabs">
+<div class="tab active" data-tab="menu">Menu</div>
+<div class="tab" data-tab="contact">Contact</div>
+<div class="tab" data-tab="feedbacks">Feedbacks</div>
+</div>
+
+<div class="content">
+<div id="menu-content">
+<select id="category-select">
+<option value="JAVALANCHE">JAVALANCHE</option>
+<option value="SMOOTHIES">SMOOTHIES</option>
+<option value="COFFEE">COFFEE</option>
+<option value="REFRESHERS">REFRESHERS</option>
+<option value="SANDWICHES">SANDWICHES</option>
+<option value="SIDES">SIDES</option>
+<option value="DRINKS">DRINKS</option>
+</select>
+<div id="menu-items"></div>
+</div>
+<div id="contact-content" style="display: none;">
+<h2>Contact Us</h2>
+<p>Click the button below to contact us via WhatsApp:</p>
+<button onclick="contactWhatsApp()">Contact via WhatsApp</button>
+<p>You will be delivered in complete confidence only by Averett students.</p>
+<div>
+<p><strong>MWF:</strong> 12:30 PM - 2:30 PM / 6:30 PM-10:00 PM</p>
+<p><strong>TTH:</strong> 11:00 AM - 1:00 PM / 2:30 PM-6:00 PM</p>
+<p><strong>WEEKEND:</strong> 9:00 AM - 9:00 PM</p>
+</div>
+</div>
+<div id="feedbacks-content" style="display: none;">
+<h2>Feedbacks</h2>
+<p>We value your opinion! Click the button below to give us your feedback:</p>
+<button onclick="openFeedbackForm()">Give Feedback</button>
+</div>
+</div>
+</div>
+
+<script>
+const menuItems = {
+JAVALANCHE: [
+{ name: 'Espresso', prices: { SM: 4.79, MED: 5.19, LRG: 5.49 }, calories: { SM: 360, MED: 475, LRG: 480 } },
+{ name: 'Caramel', prices: { SM: 4.99, MED: 5.39, LRG: 5.69 }, calories: { SM: 420, MED: 600, LRG: 665 } },
+{ name: 'Mocha', prices: { SM: 4.99, MED: 5.39, LRG: 5.69 }, calories: { SM: 405, MED: 565, LRG: 615 } },
+{ name: 'White Mocha', prices: { SM: 4.99, MED: 5.39, LRG: 5.69 }, calories: { SM: 410, MED: 575, LRG: 630 } },
+{ name: 'Strawberry Cream', prices: { SM: 4.99, MED: 5.39, LRG: 5.69 }, calories: { SM: 450, MED: 500, LRG: 560 } },
+{ name: 'Vanilla Cream', prices: { SM: 4.99, MED: 5.39, LRG: 5.69 }, calories: { SM: 470, MED: 530, LRG: 590 } },
+],
+SMOOTHIES: [
+{ name: 'Mango', prices: { SM: 4.89, MED: 5.39, LRG: 5.59 }, calories: { SM: 315, MED: 315, LRG: 365 } },
+{ name: 'Mixed Berry', prices: { SM: 4.89, MED: 5.39, LRG: 5.59 }, calories: { SM: 315, MED: 315, LRG: 365 } },
+{ name: 'Strawberry', prices: { SM: 4.89, MED: 5.39, LRG: 5.59 }, calories: { SM: 315, MED: 315, LRG: 365 } },
+{ name: 'Straw/Bana', prices: { SM: 4.89, MED: 5.39, LRG: 5.59 }, calories: { SM: 315, MED: 315, LRG: 365 } },
+{ name: 'Matcha Green Tea', prices: { SM: 4.69, MED: 5.29, LRG: 5.59 }, calories: { SM: 395, MED: 494, LRG: 575 } },
+],
+COFFEE: [
+{ name: 'Caramel Macchiato', prices: { SM: 4.59, MED: 4.99, LRG: 5.29 }, calories: { SM: 335, MED: 445, LRG: 540 } },
+{ name: 'Cinnamon Spice Latte', prices: { SM: 4.89, MED: 5.29, LRG: 5.59 }, calories: { SM: 345, MED: 475, LRG: 630 } },
+{ name: 'Latte', prices: { SM: 4.29, MED: 4.79, LRG: 4.99 }, calories: { SM: 215, MED: 270, LRG: 350 } },
+{ name: 'Vanilla Latte', prices: { SM: 4.89, MED: 5.29, LRG: 5.59 }, calories: { SM: 295, MED: 370, LRG: 470 } },
+{ name: 'Mocha/White Mocha', prices: { SM: 4.49, MED: 4.99, LRG: 5.19 }, calories: { SM: 295, MED: 390, LRG: 510 } },
+{ name: 'Cappuccino', prices: { SM: 4.19, MED: 4.69, LRG: 4.89 }, calories: { SM: 140, MED: 175, LRG: 230 } },
+{ name: 'Americano', prices: { SM: 3.29, MED: 3.79, LRG: 3.99 }, calories: { SM: 10, MED: 15, LRG: 20 } },
+{ name: 'Coffee', prices: { SM: 2.49, MED: 2.89, LRG: 3.09 }, calories: { SM: 5, MED: 10, LRG: 15 } },
+{ name: 'Hot Chocolate', prices: { SM: 3.39, MED: 3.79, LRG: 3.99 }, calories: { SM: 310, MED: 425, LRG: 540 } },
+],
+REFRESHERS: [
+{ name: 'Dragon Fruit Lychee', prices: { SM: 4.19, MED: 4.49, LRG: 4.89 }, calories: { SM: 77, MED: 103, LRG: 120 } },
+{ name: 'Strawberry Acai', prices: { SM: 4.19, MED: 4.49, LRG: 4.89 }, calories: { SM: 88, MED: 120, LRG: 140 } },
+{ name: 'Watermelon Cucumber Mint', prices: { SM: 4.19, MED: 4.49, LRG: 4.89 }, calories: { SM: 94, MED: 117, LRG: 140 } },
+],
+SANDWICHES: [
+{ name: 'Italian', price: 9.19, calories: 630, description: 'Ham, salami, prosciutto, fresh mozzarella, roasted red peppers, lettuce, tomato, onion, mayo, pepper relish, & hoogle splosh' },
+{ name: 'Chicken Caesar Wrap', price: 8.49, calories: 630, description: 'Grilled chicken, bacon, romaine lettuce, & Parmesan cheese' },
+{ name: 'Buffalo Chicken', price: 8.49, calories: 650, description: 'Grilled chicken, lettuce, tomato, onion, spicy pickles, & Buffalo blue spread' },
+{ name: 'Meatball', price: 8.49, calories: 650, description: 'Meatballs, tomato sauce, & provolone cheese' },
+{ name: 'Cuban', price: 8.49, calories: 500, description: 'Pulled pork, ham, Swiss cheese, lettuce, pickles, & yellow mustard' },
+{ name: 'Alabama BBQ Chicken', price: 9.79, calories: 770, description: 'Alabama BBQ sauce, bacon, pulled chicken, cheddar cheese, iceberg lettuce, sliced red onion, tomato, & pickles' },
+],
+SIDES: [
+{ name: 'Apple', price: 1.29 },
+{ name: 'Potato Salad', price: 3.49 },
+{ name: 'Signature Chips', price: 2.79 },
+{ name: "Miss Vickie's Chips", price: 2.59 },
+{ name: 'Fruit Cup', price: 3.39 },
+{ name: 'Soup or Chili Bowl', price: 4.69 },
+{ name: 'Craveworthy Cookie', price: 2.79 },
+],
+DRINKS: [
+{ name: 'Fountain Drink', prices: { SM: 1.99, MED: 2.49, LRG: 2.99 } },
+],
+};
+
+function renderMenuItem(item) {
+const itemElement = document.createElement('div');
+itemElement.className = 'menu-item';
+itemElement.innerHTML = `
+<h3>${ item.name }</h3>
+${item.prices ?
+Object.entries(item.prices).map(([size, price]) =>
+`<div>
+<span>${size}</span>
+<span>$${price.toFixed(2)} ${item.calories ? `(${item.calories[size]} cal)`: ''}</span>
+</div>`
+).join('') :
+`<div>
+<span>$${item.price.toFixed(2)}</span>
+${item.calories ? `<span>${item.calories} cal</span>`: ''}
+</div>`
+}
+${item.description ? `<p>${item.description}</p>`: ''}
+`;
+return itemElement;
+}
+
+function renderMenu(category) {
+const menuItemsContainer = document.getElementById('menu-items');
+menuItemsContainer.innerHTML = '';
+if (menuItems[category]) {
+menuItems[category].forEach(item => {
+menuItemsContainer.appendChild(renderMenuItem(item));
+});
+}
+}
+
+document.getElementById('category-select').addEventListener('change', (e) => {
+renderMenu(e.target.value);
+});
+
+document.querySelectorAll('.tab').forEach(tab => {
+tab.addEventListener('click', () => {
+document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+tab.classList.add('active');
+document.getElementById('menu-content').style.display = 'none';
+document.getElementById('contact-content').style.display = 'none';
+document.getElementById('feedbacks-content').style.display = 'none';
+document.getElementById(`${tab.dataset.tab}-content`).style.display = 'block';
+});
+});
+
+function contactWhatsApp() {
+window.open(' https://wa.me/33619660643?text=Hello%20it\'s%20AU-LIVERY%20delivery%0AStudent%20ID%20(number%2C%20name%2C%20picture)%3A%0AAddress%20on/out%20campus%20(Where%20are%20you%20)%3A%0AO rder%20from%20menu%3A%0A%0A(2$%20delivery%20on%20campus.%204$%20out%20campus) ', '_blank');
+}
+
+function openFeedbackForm() {
+window.open(' https://docs.google.com/forms/d/e/1FAIpQLSdt2j6lJONUwrvrT1IfkQLTknKyR4e3O-003HE1Fz6l13qxyg/viewform?vc=0 ', '_blank');
+}
+
+// Initialize the menu with the first category
+renderMenu('JAVALANCHE');
+</script>
+</body>
+</html>
